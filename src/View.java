@@ -24,13 +24,13 @@ public class View extends javax.swing.JFrame {
 
     public View() {
         initComponents();
-        
-        int[][] arr=new int[8][8];
-        
-        for(int i=0; i<8; ++i){
-            for(int j=0; j<8; ++j){
-            
-                arr[i][j]=0;
+
+        int[][] arr = new int[8][8];
+
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 8; ++j) {
+
+                arr[i][j] = 0;
             }
         }
         update(arr);
@@ -378,26 +378,29 @@ public class View extends javax.swing.JFrame {
 
     //Пуск игры
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     int [][] massive1 = massive();
+        int[][] massive1 = massive();
         controller.startGame(massive1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     //Стоп игры
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-  
+
         controller.stopGame();
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public void update(int[][] field) {
+        System.out.println();
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
-                    String str = Integer.toString(field[i][j]);
-                    jTable1.setValueAt(str, i, j);
-                }
-
+                System.out.print(field[i][j]);
+                String str = Integer.toString(field[i][j]);
+                jTable1.setValueAt(str, i, j);
             }
-    
+            System.out.println();
+
+        }
+
         YourTableCellRenderer cr = new YourTableCellRenderer();
         jTable1.setDefaultRenderer(Object.class, cr);
     }

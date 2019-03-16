@@ -1,4 +1,6 @@
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -28,27 +30,34 @@ public class Model {
             + "• при очередном шаге ни одна из клеток не меняет своего состояния (складывается стабильная\n"
             + "конфигурация; предыдущее правило, вырожденное до одного шага назад)";
 
-    public void gameProcess(int[][]field) {
-       // System.out.println("Заглушка из метода gameProcess");
-     test();
+    public void gameProcess(int[][] field) {
+        // System.out.println("Заглушка из метода gameProcess");
+        
+        //test();
         int n = field.length;
         int m = field[0].length;
+        
+        //Рождение клеток
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (field[i][j] == 0) {
-                    if (countSosed(i, j, n, m) == 3) {
+                    
+                    //Считаем соседей, если их 3, то рождается клетка
+                    if (countSosed(i, j, n, m, field) == 3) {
                         field[i][j] = 1;
                         contr.update(field);
                     }
                 }
             }
         }
+        
+        //Смерть клеток
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (field[i][j] == 1) {
-                    if ((countSosed(i, j, n, m) < 2) || (countSosed(i, j, n, m) > 3)) {
+                    if ((countSosed(i, j, n, m, field) < 2) || (countSosed(i, j, n, m, field) > 3)) {
                         field[i][j] = 0;
-                contr.update(field);
+                        contr.update(field);
                     }
                 }
             }
@@ -84,7 +93,9 @@ public class Model {
 
         contr.update(field);
     }
-        public int endMassive(int i0, int j0, int n, int m) {
+
+    public int endMassive(int i0, int j0, int n, int m, int[][] field) {
+        //System.out.println("DEBUG");
         if (i0 < 0 || j0 < 0 || i0 > n || j0 > m) {
             return 0;
         }
@@ -92,21 +103,31 @@ public class Model {
             int item = field[i0][j0];
             return item;
         } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (NullPointerException e){
+            
         }
         return 0;
 
     }
 
-    public int countSosed(int i0, int j0, int n, int m) {
+    /**
+     * Считает соседей
+     * @param i0
+     * @param j0
+     * @param n
+     * @param m
+     * @return 
+     */
+    public int countSosed(int i0, int j0, int n, int m, int[][] field) {
         int count = 0;
-        count += endMassive(i0 - 1, j0, n, m);
-        count += endMassive(i0 - 1, j0 + 1, n, m);
-        count += endMassive(i0, j0 - 1, n, m);
-        count += endMassive(i0, j0 + 1, n, m);
-        count += endMassive(i0 + 1, j0 - 1, n, m);
-        count += endMassive(i0 + 1, j0 + 1, n, m);
-        count += endMassive(i0 + 1, j0, n, m);
-        count += endMassive(i0 - 1, j0 - 1, n, m);
+        count += endMassive(i0 - 1, j0, n, m, field);
+        count += endMassive(i0 - 1, j0 + 1, n, m, field);
+        count += endMassive(i0, j0 - 1, n, m, field);
+        count += endMassive(i0, j0 + 1, n, m, field);
+        count += endMassive(i0 + 1, j0 - 1, n, m, field);
+        count += endMassive(i0 + 1, j0 + 1, n, m, field);
+        count += endMassive(i0 + 1, j0, n, m, field);
+        count += endMassive(i0 - 1, j0 - 1, n, m, field);
         return count;
     }
 
