@@ -1,7 +1,9 @@
 package javalife;
 
+import java.util.Timer;
+import java.util.TimerTask;
 
-import javax.swing.JTable;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,14 +38,30 @@ public class Controller {
      * @param field 
      */
     public void startGame(int [][]field) {
-        model.gameProcess(field);
+        Timer timer=new Timer();
+        TimerTask task=new TimerTask() {
+            @Override
+            public void run() {
+               if(model.stopped){
+               
+                   timer.cancel();
+               } 
+               
+               model.gameProcess(field);
+               update(model.getField());
+            }
+            
+        };
+        
+        timer.schedule(task, 0,300);
+    
     }
 
     /**
      * Останавливаем игру
      */
     public void stopGame() {
-        System.out.println("Заглушка из метода stopGame");
+
         model.stopped = true;
 
     }
