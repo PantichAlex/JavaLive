@@ -49,7 +49,7 @@ public class Controller {
                
                model.gameProcess(field);
                //взаимодействие популяций
-               //model.interactionPopulations(field);
+               model.interactionPopulations(field);
                update(model.getField());
             }
             

@@ -1,6 +1,5 @@
 package javalife;
 
-
 import java.util.ArrayDeque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +17,7 @@ import javax.swing.JOptionPane;
 public class Model {
 
     int[][] field, lastConfig;
-    private ArrayDeque<int[][]> Deq=new ArrayDeque<>();
+    private ArrayDeque<int[][]> Deq = new ArrayDeque<>();
     boolean stopped;
     Controller contr;
     String rules = "Условия жизни клеток:\n"
@@ -34,66 +33,67 @@ public class Model {
             + "• при очередном шаге ни одна из клеток не меняет своего состояния (складывается стабильная\n"
             + "конфигурация; предыдущее правило, вырожденное до одного шага назад)";
 
-    public int[][] getField(){
+    public int[][] getField() {
         return field;
     }
+
     public void gameProcess(int[][] field) {
         // System.out.println("Заглушка из метода gameProcess");
-        
+
         //test();
         int n = field.length;
         int m = field[0].length;
-        this.field=field;
-        lastConfig=new int[n][m];
-        for(int i=0; i<n; ++i){
-            for(int j=0; j<m; ++j){
-            
-                lastConfig[i][j]=this.field[i][j];
+        this.field = field;
+        lastConfig = new int[n][m];
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+
+                lastConfig[i][j] = this.field[i][j];
             }
         }
-        
+
         //Рождение клеток
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (field[i][j] == 0) {
-                    
+
                     //Считаем соседей, если их 3, то рождается клетка
                     if (countSosed(i, j, n, m, field) == 3) {
                         this.field[i][j] = 1;
-                    
+
                     }
-                    
+
                     //Считаем соседей, если их 3, то рождается клетка
                     if (countSosed(i, j, n, m, field) == -3) {
                         this.field[i][j] = -1;
-                    
+
                     }
                 }
             }
         }
-    
-      //Смерть клеток
+        interactionPopulations(field);
+        //Смерть клеток
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (field[i][j] == 1 || field[i][j] == -1) {
-                    
+
                     if ((Math.abs(countSosed(i, j, n, m, field)) < 2) || (Math.abs(countSosed(i, j, n, m, field)) > 3)) {
                         this.field[i][j] = 0;
-                      
+
                     }
                 }
             }
         }
-        
+
         autoStop();
-        
+
     }
+
     //Метод останавливает игру если конфигурция не изменилась
-    public void autoStop(){
-        
-     
-        
+    public void autoStop() {
+
     }
+
     public void showRules() {
         JOptionPane.showMessageDialog(null, rules);
     }
@@ -129,16 +129,16 @@ public class Model {
             return 0;
         }
         try {
-            if(field[i0][j0] != 0){
+            if (field[i0][j0] != 0) {
                 return field[i0][j0];
-            }else{
+            } else {
                 return 0;
             }
             /*int item = field[i0][j0]>0 ? 1: 0;
             return item;*/
         } catch (ArrayIndexOutOfBoundsException e) {
-        } catch (NullPointerException e){
-            
+        } catch (NullPointerException e) {
+
         }
         return 0;
 
@@ -146,11 +146,12 @@ public class Model {
 
     /**
      * Считает соседей
+     *
      * @param i0
      * @param j0
      * @param n
      * @param m
-     * @return 
+     * @return
      */
     public int countSosed(int i0, int j0, int n, int m, int[][] field) {
         int count = 0;
@@ -164,11 +165,11 @@ public class Model {
         count += endMassive(i0 - 1, j0 - 1, n, m, field);
         return count;
     }
-    
+
     /**
-     * алгоритм взаимодействия популяций
-     * проверка каждой клетки на окружение
+     * алгоритм взаимодействия популяций проверка каждой клетки на окружение
      * если врагов больше или столько же, то клетка умирает
+     *
      * @param field - поле с клетками
      */
     public void interactionPopulations(int[][] field) {
@@ -178,49 +179,91 @@ public class Model {
         int countEnemies = 0;
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < m - 1; j++) {
-                if (!(field[i][j] == 0)) {
-                    if (i - 1 >= 0 && field[i - 1][j] != 0 && field[i][j] == field[i - 1][j]) {
-                        countOwnPopulation++;
-                    } else {
-                        countEnemies++;
+                countOwnPopulation = 0;
+                countEnemies = 0;
+                if (field[i][j] != 0) {
+                    //проверяем на выход за поле
+                    if (i - 1 >= 0) {
+                        //проверяем значения ячеек
+                        if (field[i][j] == field[i - 1][j]) {
+                            countOwnPopulation++;
+                        } else if(field[i - 1][j] != 0) {
+                            countEnemies++;
+                        }
                     }
-                    if (i - 1 >= 0 && j - 1 >= 0 && field[i - 1][j - 1] != 0 && field[i][j] == field[i - 1][j - 1]) {
-                        countOwnPopulation++;
-                    } else {
-                        countEnemies++;
+                    
+                    //проверяем на выход за поле
+                    if (i - 1 >= 0 && j - 1 >= 0) {
+                        //проверяем значения ячеек
+                        if (field[i][j] == field[i - 1][j - 1]) {
+                            countOwnPopulation++;
+                        } else if(field[i - 1][j - 1] != 0) {
+                            countEnemies++;
+                        }
                     }
-                    if (j - 1 >= 0 && field[i][j - 1] != 0 && field[i][j] == field[i][j - 1]) {
-                        countOwnPopulation++;
-                    } else {
-                        countEnemies++;
+                    
+                    //проверяем на выход за поле
+                    if (j - 1 >= 0) {
+                        //проверяем значения ячеек
+                        if (field[i][j] == field[i][j - 1]) {
+                            countOwnPopulation++;
+                        } else if(field[i][j - 1] != 0) {
+                            countEnemies++;
+                        }
                     }
-                    if (i - 1 >= 0 && j + 1 <= m - 1 && field[i - 1][j + 1] != 0 && field[i][j] == field[i - 1][j + 1]) {
-                        countOwnPopulation++;
-                    } else {
-                        countEnemies++;
+                    
+                    //проверяем на выход за поле
+                    if (i - 1 >= 0 && j + 1 <= m - 1) {
+                        //проверяем значения ячеек
+                        if (field[i][j] == field[i - 1][j + 1]) {
+                            countOwnPopulation++;
+                        } else if(field[i - 1][j + 1] != 0){
+                            countEnemies++;
+                        }
                     }
-                    if (i + 1 <= n - 1 && j - 1 >= 0 && field[i + 1][j - 1] != 0 && field[i][j] == field[i + 1][j - 1]) {
-                        countOwnPopulation++;
-                    } else {
-                        countEnemies++;
+                    
+                    //проверяем на выход за поле
+                    if (i + 1 <= n - 1 && j - 1 >= 0) {
+                        //проверяем значения ячеек
+                        if (field[i][j] == field[i + 1][j - 1]) {
+                            countOwnPopulation++;
+                        } else if(field[i + 1][j - 1] != 0){
+                            countEnemies++;
+                        }
                     }
-                    if (i + 1 <= n - 1 && field[i + 1][j] != 0 && field[i][j] == field[i + 1][j]) {
-                        countOwnPopulation++;
-                    } else {
-                        countEnemies++;
+                    
+                    //проверяем на выход за поле
+                    if (i + 1 <= n - 1) {
+                        //проверяем значения ячеек
+                        if (field[i][j] == field[i + 1][j]) {
+                            countOwnPopulation++;
+                        } else if(field[i + 1][j] != 0){
+                            countEnemies++;
+                        }
                     }
-                    if (j + 1 <= m - 1 && field[i][j + 1] != 0 && field[i][j] == field[i][j + 1]) {
-                        countOwnPopulation++;
-                    } else {
-                        countEnemies++;
+                    
+                    //проверяем на выход за поле
+                    if (j + 1 <= m - 1) {
+                        //проверяем значения ячеек
+                        if (field[i][j] == field[i][j + 1]) {
+                            countOwnPopulation++;
+                        } else if(field[i][j + 1] != 0 ) {
+                            countEnemies++;
+                        }
                     }
-                    if (i + 1 <= n - 1 && j + 1 <= m - 1 && field[i + 1][j + 1] != 0 && field[i][j] == field[i + 1][j + 1]) {
-                        countOwnPopulation++;
-                    } else {
-                        countEnemies++;
+                    
+                    //проверяем на выход за поле
+                    if (i + 1 <= n - 1 && j + 1 <= m - 1) {
+                        //проверяем значения ячеек
+                        if (field[i][j] == field[i + 1][j + 1]) {
+                            countOwnPopulation++;
+                        } else if(field[i + 1][j + 1] != 0) {
+                            countEnemies++;
+                        }
                     }
+                    
                     if (countEnemies >= countOwnPopulation) {
-                        field[i][j]=0;
+                        field[i][j] = 0;
                     }
                 }
             }
