@@ -62,6 +62,12 @@ public class Model {
                         this.field[i][j] = 1;
                     
                     }
+                    
+                    //Считаем соседей, если их 3, то рождается клетка
+                    if (countSosed(i, j, n, m, field) == -3) {
+                        this.field[i][j] = -1;
+                    
+                    }
                 }
             }
         }
@@ -69,14 +75,16 @@ public class Model {
       //Смерть клеток
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (field[i][j] == 1) {
-                    if ((countSosed(i, j, n, m, field) < 2) || (countSosed(i, j, n, m, field) > 3)) {
+                if (field[i][j] == 1 || field[i][j] == -1) {
+                    
+                    if ((Math.abs(countSosed(i, j, n, m, field)) < 2) || (Math.abs(countSosed(i, j, n, m, field)) > 3)) {
                         this.field[i][j] = 0;
                       
                     }
                 }
             }
         }
+        
         autoStop();
         
     }
@@ -121,8 +129,13 @@ public class Model {
             return 0;
         }
         try {
-            int item = field[i0][j0]>0 ? 1: 0;
-            return item;
+            if(field[i0][j0] != 0){
+                return field[i0][j0];
+            }else{
+                return 0;
+            }
+            /*int item = field[i0][j0]>0 ? 1: 0;
+            return item;*/
         } catch (ArrayIndexOutOfBoundsException e) {
         } catch (NullPointerException e){
             
@@ -152,6 +165,12 @@ public class Model {
         return count;
     }
     
+    /**
+     * алгоритм взаимодействия популяций
+     * проверка каждой клетки на окружение
+     * если врагов больше или столько же, то клетка умирает
+     * @param field - поле с клетками
+     */
     public void interactionPopulations(int[][] field) {
         int n = field.length;
         int m = field[0].length;
@@ -165,37 +184,37 @@ public class Model {
                     } else {
                         countEnemies++;
                     }
-                    if (i - 1 >= 0 && j - 1 >= 0 && field[i - 1][j] != 0 && field[i][j] == field[i - 1][j - 1]) {
+                    if (i - 1 >= 0 && j - 1 >= 0 && field[i - 1][j - 1] != 0 && field[i][j] == field[i - 1][j - 1]) {
                         countOwnPopulation++;
                     } else {
                         countEnemies++;
                     }
-                    if (j - 1 >= 0 && field[i - 1][j] != 0 && field[i][j] == field[i][j - 1]) {
+                    if (j - 1 >= 0 && field[i][j - 1] != 0 && field[i][j] == field[i][j - 1]) {
                         countOwnPopulation++;
                     } else {
                         countEnemies++;
                     }
-                    if (i - 1 >= 0 && j + 1 <= m - 1 && field[i - 1][j] != 0 && field[i][j] == field[i - 1][j + 1]) {
+                    if (i - 1 >= 0 && j + 1 <= m - 1 && field[i - 1][j + 1] != 0 && field[i][j] == field[i - 1][j + 1]) {
                         countOwnPopulation++;
                     } else {
                         countEnemies++;
                     }
-                    if (i + 1 <= n - 1 && j - 1 >= 0 && field[i - 1][j] != 0 && field[i][j] == field[i + 1][j - 1]) {
+                    if (i + 1 <= n - 1 && j - 1 >= 0 && field[i + 1][j - 1] != 0 && field[i][j] == field[i + 1][j - 1]) {
                         countOwnPopulation++;
                     } else {
                         countEnemies++;
                     }
-                    if (i + 1 <= n - 1 && field[i - 1][j] != 0 && field[i][j] == field[i + 1][j]) {
+                    if (i + 1 <= n - 1 && field[i + 1][j] != 0 && field[i][j] == field[i + 1][j]) {
                         countOwnPopulation++;
                     } else {
                         countEnemies++;
                     }
-                    if (j + 1 <= m - 1 && field[i - 1][j] != 0 && field[i][j] == field[i][j + 1]) {
+                    if (j + 1 <= m - 1 && field[i][j + 1] != 0 && field[i][j] == field[i][j + 1]) {
                         countOwnPopulation++;
                     } else {
                         countEnemies++;
                     }
-                    if (i + 1 <= n - 1 && j + 1 <= m - 1 && field[i - 1][j] != 0 && field[i][j] == field[i + 1][j + 1]) {
+                    if (i + 1 <= n - 1 && j + 1 <= m - 1 && field[i + 1][j + 1] != 0 && field[i][j] == field[i + 1][j + 1]) {
                         countOwnPopulation++;
                     } else {
                         countEnemies++;
@@ -206,6 +225,7 @@ public class Model {
                 }
             }
         }
+        autoStop();
     }
 
 }
