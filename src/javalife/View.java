@@ -399,7 +399,7 @@ public class View extends javax.swing.JFrame {
                 String str = Integer.toString(field[i][j]);
                 jTable1.setValueAt(str, i, j);
             }
-            System.out.println();
+           // System.out.println();
 
         }
 

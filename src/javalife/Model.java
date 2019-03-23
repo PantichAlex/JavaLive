@@ -77,13 +77,20 @@ public class Model {
                 }
             }
         }
+       // interactionPopulations(field);
         autoStop();
         
     }
     //Метод останавливает игру если конфигурция не изменилась
     public void autoStop(){
         
-     
+        this.stopped=true;
+        for(int i=0; i<lastConfig.length; ++i){
+        
+            for (int j = 0; j < lastConfig[i].length; ++j) {
+                this.stopped&=lastConfig[i][j]==field[i][j];
+            }
+        }
         
     }
     public void showRules() {
@@ -100,7 +107,7 @@ public class Model {
 
     public void test() {
         field = new int[8][8];
-        System.out.println("qqq" + field.length);
+
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -121,7 +128,7 @@ public class Model {
             return 0;
         }
         try {
-            int item = field[i0][j0]>0 ? 1: 0;
+            int item = Math.abs(field[i0][j0])>0 ? 1: 0;
             return item;
         } catch (ArrayIndexOutOfBoundsException e) {
         } catch (NullPointerException e){
@@ -150,6 +157,68 @@ public class Model {
         count += endMassive(i0 + 1, j0, n, m, field);
         count += endMassive(i0 - 1, j0 - 1, n, m, field);
         return count;
+    }
+    /**
+     * алгоритм взаимодействия популяций
+     * проверка каждой клетки на окружение
+     * если врагов больше или столько же, то клетка умирает
+     * @param field - поле с клетками
+     */
+    public void interactionPopulations(int[][] field) {
+        int n = field.length;
+        int m = field[0].length;
+        int countOwnPopulation = 0;
+        int countEnemies = 0;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < m - 1; j++) {
+                if (!(field[i][j] == 0)) {
+                    if (i - 1 >= 0 && field[i - 1][j] != 0 && field[i][j] == field[i - 1][j]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (i - 1 >= 0 && j - 1 >= 0 && field[i - 1][j - 1] != 0 && field[i][j] == field[i - 1][j - 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (j - 1 >= 0 && field[i][j - 1] != 0 && field[i][j] == field[i][j - 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (i - 1 >= 0 && j + 1 <= m - 1 && field[i - 1][j + 1] != 0 && field[i][j] == field[i - 1][j + 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (i + 1 <= n - 1 && j - 1 >= 0 && field[i + 1][j - 1] != 0 && field[i][j] == field[i + 1][j - 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (i + 1 <= n - 1 && field[i + 1][j] != 0 && field[i][j] == field[i + 1][j]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (j + 1 <= m - 1 && field[i][j + 1] != 0 && field[i][j] == field[i][j + 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (i + 1 <= n - 1 && j + 1 <= m - 1 && field[i + 1][j + 1] != 0 && field[i][j] == field[i + 1][j + 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (countEnemies >= countOwnPopulation) {
+                        field[i][j]=0;
+                    }
+                }
+            }
+        }
+      //  autoStop();
     }
 
 }

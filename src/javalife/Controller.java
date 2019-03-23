@@ -43,7 +43,7 @@ public class Controller {
             @Override
             public void run() {
                if(model.stopped){
-               
+                      System.out.println("Game Over");
                    timer.cancel();
                } 
                
@@ -61,7 +61,7 @@ public class Controller {
      * Останавливаем игру
      */
     public void stopGame() {
-
+     
         model.stopped = true;
 
     }
