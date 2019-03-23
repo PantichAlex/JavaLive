@@ -229,9 +229,11 @@ public class View extends javax.swing.JFrame {
         System.out.print(Row);
         System.out.println(Column);
         if ("1".equals(jTable1.getValueAt(Row, Column))) {
-            jTable1.setValueAt("0", Row, Column);
+            jTable1.setValueAt("-1", Row, Column);
 
-        } else {
+        }else if ("-1".equals(jTable1.getValueAt(Row, Column))){
+            jTable1.setValueAt("0", Row, Column);
+        }else {
             jTable1.setValueAt("1", Row, Column);
 
         }
