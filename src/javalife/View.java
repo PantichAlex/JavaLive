@@ -455,13 +455,13 @@ public class View extends javax.swing.JFrame {
                 }  
                 if("2".equals(table.getModel().getValueAt(row, column)))
                 {
-                    Color green = new Color(0, 250, 0);
+                    Color green = new Color(200, 0, 0);
                     c.setBackground(green);
                     c.setForeground(green);
                 }
                 if("3".equals(table.getModel().getValueAt(row, column)))
                 {
-                    Color red = new Color(250, 0, 0);
+                    Color red = new Color(150, 0, 0);
                     c.setBackground(red);
                     c.setForeground(red);
                 }  
@@ -473,13 +473,13 @@ public class View extends javax.swing.JFrame {
                 }
                 if("-2".equals(table.getModel().getValueAt(row, column)))
                 {
-                    Color red = new Color(250, 0, 0);
+                    Color red = new Color(0, 200, 0);
                     c.setBackground(red);
                     c.setForeground(red);
                 }  
                 if("-3".equals(table.getModel().getValueAt(row, column)))
                 {
-                    Color green = new Color(0, 250, 0);
+                    Color green = new Color(0, 150, 0);
                     c.setBackground(green);
                     c.setForeground(green);
                 }
