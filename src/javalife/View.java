@@ -445,14 +445,51 @@ public class View extends javax.swing.JFrame {
                             isSelected, hasFocus,
                             row, column);
 
-            if ("1".equals(table.getModel().getValueAt(row, column))) {
-
-                c.setBackground(Color.red);
-                c.setForeground(Color.black);
-
-            } else {
+             if ("1".equals(table.getModel().getValueAt(row, column)) || "-1".equals(table.getModel().getValueAt(row, column))) 
+            {
+                if("1".equals(table.getModel().getValueAt(row, column)))
+                {
+                    Color red = new Color(250, 0, 0);
+                    c.setBackground(red);
+                    c.setForeground(red);
+                }  
+                if("2".equals(table.getModel().getValueAt(row, column)))
+                {
+                    Color green = new Color(0, 250, 0);
+                    c.setBackground(green);
+                    c.setForeground(green);
+                }
+                if("3".equals(table.getModel().getValueAt(row, column)))
+                {
+                    Color red = new Color(250, 0, 0);
+                    c.setBackground(red);
+                    c.setForeground(red);
+                }  
+                if("-1".equals(table.getModel().getValueAt(row, column)))
+                {
+                    Color green = new Color(0, 250, 0);
+                    c.setBackground(green);
+                    c.setForeground(green);
+                }
+                if("-2".equals(table.getModel().getValueAt(row, column)))
+                {
+                    Color red = new Color(250, 0, 0);
+                    c.setBackground(red);
+                    c.setForeground(red);
+                }  
+                if("-3".equals(table.getModel().getValueAt(row, column)))
+                {
+                    Color green = new Color(0, 250, 0);
+                    c.setBackground(green);
+                    c.setForeground(green);
+                }
+                
+                
+            }
+            else 
+            {
                 c.setBackground(Color.white);
-                c.setForeground(Color.black);
+                c.setForeground(Color.black );
             }
             return c;
         }
