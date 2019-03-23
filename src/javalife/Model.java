@@ -151,5 +151,61 @@ public class Model {
         count += endMassive(i0 - 1, j0 - 1, n, m, field);
         return count;
     }
+    
+    public void interactionPopulations(int[][] field) {
+        int n = field.length;
+        int m = field[0].length;
+        int countOwnPopulation = 0;
+        int countEnemies = 0;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < m - 1; j++) {
+                if (!(field[i][j] == 0)) {
+                    if (i - 1 >= 0 && field[i - 1][j] != 0 && field[i][j] == field[i - 1][j]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (i - 1 >= 0 && j - 1 >= 0 && field[i - 1][j] != 0 && field[i][j] == field[i - 1][j - 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (j - 1 >= 0 && field[i - 1][j] != 0 && field[i][j] == field[i][j - 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (i - 1 >= 0 && j + 1 <= m - 1 && field[i - 1][j] != 0 && field[i][j] == field[i - 1][j + 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (i + 1 <= n - 1 && j - 1 >= 0 && field[i - 1][j] != 0 && field[i][j] == field[i + 1][j - 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (i + 1 <= n - 1 && field[i - 1][j] != 0 && field[i][j] == field[i + 1][j]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (j + 1 <= m - 1 && field[i - 1][j] != 0 && field[i][j] == field[i][j + 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (i + 1 <= n - 1 && j + 1 <= m - 1 && field[i - 1][j] != 0 && field[i][j] == field[i + 1][j + 1]) {
+                        countOwnPopulation++;
+                    } else {
+                        countEnemies++;
+                    }
+                    if (countEnemies >= countOwnPopulation) {
+                        field[i][j]=0;
+                    }
+                }
+            }
+        }
+    }
 
 }
