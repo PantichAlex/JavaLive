@@ -71,6 +71,7 @@ public class Model {
                 }
             }
         }
+        //Взаимодействие популяций
         interactionPopulations(field);
         //Смерть клеток
         for (int i = 0; i < n; i++) {
